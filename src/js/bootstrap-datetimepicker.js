@@ -132,6 +132,14 @@
              * Private functions
              *
              ********************************************************************************/
+            getCurrentGranularity = function () {
+                if (actualFormat.indexOf('s') !== -1) { return 's'; }
+                if (actualFormat.indexOf('m') !== -1) { return 'm'; }
+                if (actualFormat.toLowerCase().indexOf('h') !== -1) { return 'h'; }
+                if (actualFormat.toLowerCase().indexOf('d') !== -1) { return 'd'; }
+                if (actualFormat.indexOf('M') !== -1) { return 'M'; }
+                if (actualFormat.indexOf('Y') !== -1) { return 'y'; }
+            },
             isEnabled = function (granularity) {
                 if (typeof granularity !== 'string' || granularity.length > 1) {
                     throw new TypeError('isEnabled expects a single character string parameter');
@@ -829,7 +837,7 @@
                     targetMoment.minutes((Math.round(targetMoment.minutes() / options.stepping) * options.stepping) % 60).seconds(0);
                 }
 
-                if (isValid(targetMoment)) {
+                if (isValid(targetMoment, getCurrentGranularity())) {
                     date = targetMoment;
                     viewDate = date.clone();
                     input.val(date.format(actualFormat));
